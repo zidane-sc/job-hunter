@@ -1,0 +1,16 @@
+[Unit]
+Description=Career Radar and Job Application Tracker Web UI
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/data/workspace/tools/job-hunter
+ExecStart=/usr/bin/python3 /data/workspace/tools/job-hunter/server.py 8095
+Restart=always
+RestartSec=5
+Nice=10
+StandardOutput=append:/data/workspace/tools/job-hunter/server.log
+StandardError=append:/data/workspace/tools/job-hunter/server.log
+
+[Install]
+WantedBy=default.target

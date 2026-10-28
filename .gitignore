@@ -1,0 +1,27 @@
+# Databases & Local SQLite State
+jobs.db
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+
+# Logs
+*.log
+server.log
+
+# Environment variables & secrets
+.env
+.env.local
+.env.*.local
+
+# Python bytecode & cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.bak
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+env/
