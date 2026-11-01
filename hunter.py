@@ -248,6 +248,10 @@ def score_job(title: str, company: str, location: str, extra: str = "", employme
     if REJECT_AI_TITLE_REGEX.search(title_lower):
         return 0, "Auto-reject: ML/AI role title", jtype
 
+    # 1b. Reject Internship (Disabled: user interning at current company)
+    if jtype == "INTERNSHIP":
+        return 0, "Auto-reject: Internship disabled (interning at current company)", jtype
+
     # 2. Reject non-tech roles
     for neg in NON_TECH_REJECT:
         if re.search(rf"\b{re.escape(neg)}\b", text):
@@ -975,18 +979,18 @@ def run_scan():
         max_results=20
     ))
     all_jobs.extend(scrape_exa_jobs(
-        "Software Engineer Intern Fullstack", 
+        "Software Engineer Part-Time Fullstack remote", 
         default_source="wellfound", 
         site_filter="(site:wellfound.com/jobs OR site:workatastartup.com/companies)",
         max_results=20
     ))
 
-    # 3. Web3 & Crypto High-Paying Roles
-    print("  ├─ [3/11] Web3 & Crypto (Web3.career, CryptocurrencyJobs)...")
+    # 3. Direct ATS Flexible & High-Paying Roles
+    print("  ├─ [3/11] Direct ATS Part-time & Contract (Ashby, Greenhouse, Lever)...")
     all_jobs.extend(scrape_exa_jobs(
-        "Golang Backend Engineer remote", 
-        default_source="web3", 
-        site_filter="(site:web3.career OR site:cryptocurrencyjobs.co OR site:cryptojobslist.com)",
+        "Golang Backend Engineer part-time OR contract remote", 
+        default_source="ashby", 
+        site_filter="(site:jobs.ashbyhq.com OR site:boards.greenhouse.io OR site:jobs.lever.co)",
         max_results=20
     ))
 
@@ -1001,12 +1005,12 @@ def run_scan():
 
     # 5. Indonesia Local (Dealls REST API)
     print("  ├─ [5/11] Dealls (Official REST API)...")
-    for q in ["golang", "backend", "fullstack", "php", "laravel", "software engineer", "intern backend", "intern software"]:
+    for q in ["golang", "backend", "fullstack", "php", "laravel", "software engineer", "part time backend", "freelance backend"]:
         all_jobs.extend(scrape_dealls(q, limit=50))
 
     # 6. Indonesia Local (Kalibrr REST API)
     print("  ├─ [6/11] Kalibrr (Official REST API)...")
-    for q in ["golang", "backend engineer", "fullstack", "php laravel", "software engineer intern"]:
+    for q in ["golang", "backend engineer", "fullstack", "php laravel", "part time software engineer"]:
         all_jobs.extend(scrape_kalibrr(q, limit=50))
 
     # 7. Jobstreet & Indeed
